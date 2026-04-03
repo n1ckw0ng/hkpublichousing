@@ -3,31 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>香港公屋 - 地圖 + 筆記 (安全版)</title>
+<title>香港公屋屋邨地圖及共享筆記</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *{box-sizing:border-box} html,body{margin:0;padding:0;height:100%;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;background:#f8fafc}
-.page{min-height:100vh;display:flex;flex-direction:column} .header{padding:20px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff} .header h1{margin:0 0 6px;font-size:22px} .header p{margin:0;font-size:14px;opacity:.92}
-#map{height:33vh;flex-shrink:0} .content{flex:1;display:flex;flex-direction:column;background:#fff}
-.controls{padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end} .cg{display:flex;flex-direction:column;gap:4px} .cg label{font-size:13px;font-weight:600;color:#374151} .cg input,.cg select{padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;min-width:150px} .cg input{min-width:220px}
-.status{padding:10px 20px;font-size:13px;color:#64748b;border-bottom:1px solid #eef2f7} .table-wrap{flex:1;overflow:auto}
-.dataTables_wrapper .dataTables_filter,.dataTables_wrapper .dataTables_length{display:none} table.dataTable{width:100%!important} table.dataTable thead th{background:#f1f5f9;color:#1e293b;font-weight:600;padding:14px 12px;border-bottom:2px solid #e2e8f0;white-space:nowrap} table.dataTable tbody td{padding:12px;border-bottom:1px solid #f1f5f9;vertical-align:middle;font-size:14px}
-.estate-link{color:#1e40af;font-weight:600;cursor:pointer;text-decoration:none} .estate-link:hover{text-decoration:underline}
-.notes-btn{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;padding:8px 14px;font-size:13px;font-weight:500;color:#64748b;display:inline-flex;align-items:center;gap:6px} .notes-btn.has{background:#fef3c7;border-color:#fcd34d;color:#92400e} .notes-count{background:#dc2626;color:#fff;border-radius:99px;padding:1px 7px;font-size:11px;font-weight:700}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:all .2s} .modal-overlay.open{opacity:1;visibility:visible} .modal-box{background:#fff;border-radius:20px;width:100%;max-width:860px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 30px 60px rgba(0,0,0,.3)} .modal-head{padding:24px 28px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center} .modal-head h2{margin:0;font-size:20px;color:#1e293b} .modal-x{background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8;width:40px;height:40px;border-radius:10px}
-.modal-body{padding:28px;overflow-y:auto;flex:1} .sec{margin-bottom:28px} .sec h3{font-size:16px;font-weight:600;color:#1e293b;margin:0 0 14px;padding-left:10px;border-left:4px solid #3b82f6;display:flex;align-items:center;gap:8px} #noteText{width:100%;min-height:130px;padding:16px;border:2px solid #e5e7eb;border-radius:12px;font-family:inherit;font-size:15px;resize:vertical;line-height:1.6}
-.drop-zone{border:3px dashed #d1d5db;border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;background:#fafbfc} .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;margin-top:16px} .photo-wrap{position:relative} .photo-wrap img{width:100%;height:100px;object-fit:cover;border-radius:10px;border:2px solid #f1f5f9;display:block}
-.draw-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px} .tb{padding:10px 14px;border:1px solid #d1d5db;background:#f8fafc;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500} .tb.on{background:#3b82f6;color:#fff;border-color:#3b82f6} #canvas{border:2px solid #e5e7eb;border-radius:12px;cursor:crosshair;background:#fff;display:block;width:100%;height:220px;touch-action:none} .modal-foot{padding:20px 28px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:12px} .btn{padding:12px 26px;border:none;border-radius:10px;cursor:pointer;font-size:15px;font-weight:600} .btn-save{background:#1e40af;color:#fff} .btn-clear{background:#f8fafc;color:#64748b;border:1px solid #e2e8f0}
-@media(max-width:768px){.controls{flex-direction:column} .cg,.cg input,.cg select{width:100%;min-width:auto} #map{height:28vh}}
+.page{min-height:100vh;display:flex;flex-direction:column}.header{padding:18px 20px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff}.header h1{margin:0 0 6px;font-size:22px}.header p{margin:0;font-size:14px;opacity:.92}
+#map{height:32vh;flex-shrink:0}.content{flex:1;display:flex;flex-direction:column;background:#fff}.status{padding:10px 20px;font-size:13px;color:#64748b;border-bottom:1px solid #eef2f7}
+.controls{padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}.cg{display:flex;flex-direction:column;gap:4px}.cg label{font-size:13px;font-weight:600;color:#374151}.cg input,.cg select{padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;min-width:150px}.cg input{min-width:220px}
+.table-wrap{flex:1;overflow:auto}.dataTables_wrapper .dataTables_filter,.dataTables_wrapper .dataTables_length{display:none}table.dataTable{width:100%!important}table.dataTable thead th{background:#f1f5f9;color:#1e293b;font-weight:600;padding:14px 12px;border-bottom:2px solid #e2e8f0;white-space:nowrap;cursor:pointer}table.dataTable tbody td{padding:12px;border-bottom:1px solid #f1f5f9;vertical-align:middle;font-size:14px}
+.estate-link{color:#1e40af;font-weight:600;cursor:pointer;text-decoration:none}.estate-link:hover{text-decoration:underline}
+.notes-btn{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;padding:8px 14px;font-size:13px;font-weight:500;color:#64748b;display:inline-flex;align-items:center;gap:6px}.notes-btn.has{background:#ecfdf5;border-color:#86efac;color:#166534}.notes-count{background:#2563eb;color:#fff;border-radius:99px;padding:1px 7px;font-size:11px;font-weight:700}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:all .2s}.modal-overlay.open{opacity:1;visibility:visible}
+.modal-box{background:#fff;border-radius:20px;width:100%;max-width:900px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 30px 60px rgba(0,0,0,.3)}.modal-head{padding:24px 28px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}.modal-head h2{margin:0;font-size:20px;color:#1e293b}.modal-x{background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8;width:40px;height:40px;border-radius:10px}
+.modal-body{padding:28px;overflow-y:auto;flex:1}.sec{margin-bottom:28px}.sec h3{font-size:16px;font-weight:600;color:#1e293b;margin:0 0 14px;padding-left:10px;border-left:4px solid #3b82f6;display:flex;align-items:center;gap:8px}
+#noteText{width:100%;min-height:130px;padding:16px;border:2px solid #e5e7eb;border-radius:12px;font-family:inherit;font-size:15px;resize:vertical;line-height:1.6}.drop-zone{border:3px dashed #d1d5db;border-radius:14px;padding:24px 20px;text-align:center;cursor:pointer;background:#fafbfc}.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;margin-top:16px}.photo-wrap{position:relative}.photo-wrap img{width:100%;height:100px;object-fit:cover;border-radius:10px;border:2px solid #f1f5f9;display:block}.photo-del{position:absolute;top:-7px;right:-7px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.draw-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.tb{padding:10px 14px;border:1px solid #d1d5db;background:#f8fafc;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500}.tb.on{background:#3b82f6;color:#fff;border-color:#3b82f6}#canvas{border:2px solid #e5e7eb;border-radius:12px;cursor:crosshair;background:#fff;display:block;width:100%;height:220px;touch-action:none}
+.modal-foot{padding:20px 28px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:12px}.btn{padding:12px 26px;border:none;border-radius:10px;cursor:pointer;font-size:15px;font-weight:600}.btn-save{background:#1e40af;color:#fff}.btn-clear{background:#f8fafc;color:#64748b;border:1px solid #e2e8f0}.help{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.6;color:#475569}
+@media(max-width:768px){.controls{flex-direction:column}.cg,.cg input,.cg select{width:100%;min-width:auto}#map{height:28vh}}
 </style>
 </head>
 <body>
 <div class="page">
   <div class="header">
-    <h1>🏠 香港公屋屋邨地圖及巡查筆記</h1>
-    <p>📍 點擊屋邨名稱定位地圖 ｜ 🔍 多欄篩選 ｜ 📝 文字 / 照片 / 手繪筆記</p>
+    <h1>🏠 香港公屋屋邨地圖及共享筆記</h1>
+    <p>✅ 年份排序已強制修正 ｜ ☁️ Supabase 共享筆記 ｜ 📍 地圖 / 篩選 / 文字 / 照片 / 手繪</p>
   </div>
   <div id="map"></div>
   <div class="content">
@@ -40,8 +41,17 @@
       <div class="cg"><label>🔢 座數</label><select id="f3"><option value="">全部</option></select></div>
     </div>
     <div class="table-wrap">
-      <table id="tbl" class="display stripe">
-        <thead><tr><th>屋邨名稱</th><th>地區</th><th>入伙年份</th><th>大廈類型</th><th>座數</th><th style="width:110px">📝 筆記</th></tr></thead>
+      <table id="tbl" class="display stripe" style="width:100%">
+        <thead>
+          <tr>
+            <th>屋邨名稱</th>
+            <th>地區</th>
+            <th>入伙年份</th>
+            <th>大廈類型</th>
+            <th>座數</th>
+            <th style="width:110px">📝 筆記</th>
+          </tr>
+        </thead>
         <tbody></tbody>
       </table>
     </div>
@@ -51,8 +61,9 @@
   <div class="modal-box">
     <div class="modal-head"><h2 id="mtitle">筆記</h2><button class="modal-x" id="mclose">✕</button></div>
     <div class="modal-body">
+      <div class="help" style="margin-bottom:20px">這個版本使用 Supabase 共享筆記。其他人打開同一個 GitHub Pages 連結，就會看到相同筆記。</div>
       <div class="sec"><h3><i class="fas fa-pen-to-square"></i> 文字筆記</h3><textarea id="noteText" placeholder="記錄現場狀況、維修需求、跟進事項..."></textarea></div>
-      <div class="sec"><h3><i class="fas fa-images"></i> 照片 <span id="pcount" style="font-size:13px;font-weight:400;color:#64748b"></span></h3><div class="drop-zone" id="dropZone"><i class="fas fa-cloud-upload-alt"></i><div>點擊或拖放照片上傳 (支援多選)</div><input type="file" id="fileIn" accept="image/*" multiple style="display:none"></div><div class="photo-grid" id="pGrid"></div></div>
+      <div class="sec"><h3><i class="fas fa-images"></i> 照片 <span id="pcount" style="font-size:13px;font-weight:400;color:#64748b"></span></h3><div class="drop-zone" id="dropZone"><div>點擊或拖放照片上傳 (支援多選)</div><input type="file" id="fileIn" accept="image/*" multiple style="display:none"></div><div class="photo-grid" id="pGrid"></div></div>
       <div class="sec"><h3><i class="fas fa-pencil"></i> 手繪草圖</h3><div class="draw-tools"><button class="tb on" data-t="pen">畫筆</button><button class="tb" data-t="erase">橡皮</button><input type="color" id="colorPick" value="#1e293b"><label style="font-size:13px;color:#64748b;display:flex;align-items:center;gap:6px">粗細 <input type="range" id="sizeRange" min="1" max="24" value="4"></label><button class="tb" id="clearDraw">清除</button><button class="tb" id="saveDraw">存為照片</button></div><canvas id="canvas"></canvas></div>
     </div>
     <div class="modal-foot"><button class="btn btn-clear" id="clearAll">清除全部筆記</button><button class="btn btn-save" id="saveNote">保存並關閉</button></div>
@@ -62,33 +73,177 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-function safeStoreGet(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};}}
-function safeStoreSet(key,val){try{localStorage.setItem(key, JSON.stringify(val));}catch(e){console.warn('localStorage unavailable in sandbox preview');}}
-function eid(name,dist){try{return btoa(unescape(encodeURIComponent(name+'|'+dist))).replace(/[^a-z0-9]/gi,'').slice(0,22)}catch(e){return (name+'|'+dist).replace(/[^\w一-鿿]/g,'').slice(0,22)}}
+const SUPABASE_URL = "https://ggiiaeivnwdheengftrd.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnaWlhZWl2bndkaGVlbmdmdHJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMTYwODEsImV4cCI6MjA5MDc5MjA4MX0.wYXbiTy8jDf9TVlOOxH3x0BguIAg8gDIoYvfHC9wJDU";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
+function eid(name, dist) {
+  try { return btoa(unescape(encodeURIComponent(name + '|' + dist))).replace(/[^a-z0-9]/gi,'').slice(0,22); }
+  catch(e) { return (name + '|' + dist).replace(/[^A-Za-z0-9\u4e00-\u9fff]/g,'').slice(0,22); }
+}
 const RAW = JSON.parse(document.getElementById('estate-data').textContent);
-const NOTES = safeStoreGet('prhNotesSafe');
-const estates = RAW.map((r,i)=>({i,name:r['Estate Name']?.['zh-Hant']||'',dist:r['District Name']?.['zh-Hant']||'',year:r['Year of Intake']?.['zh-Hant']||r['Year of Intake']?.['en']||'',types:r['Type(s) of Block(s)']?.['zh-Hant']||'',blocks:String(r['No. of Blocks']||'N/A'),lat:parseFloat(r['Estate Map Latitude']),lng:parseFloat(r['Estate Map Longitude']),id:eid(r['Estate Name']?.['zh-Hant']||'',r['District Name']?.['zh-Hant']||'')})).filter(e=>e.name);
-const lmap = L.map('map').setView([22.32,114.17],10); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(lmap);
-const markers={}; const bounds=[]; estates.forEach(e=>{ if(!isNaN(e.lat)&&!isNaN(e.lng)){ const m=L.marker([e.lat,e.lng]).addTo(lmap); m.bindPopup('<b>'+e.name+'</b><br>'+e.dist+'<br>'+e.year); markers[e.i]=m; bounds.push([e.lat,e.lng]); } }); if(bounds.length) lmap.fitBounds(bounds,{padding:[10,10]});
-function notesBtnHtml(id){ const n=NOTES[id]; const cnt=(n?.text?1:0)+(n?.photos?.length||0); return cnt ? '<button class="notes-btn has" data-id="'+id+'">筆記 <span class="notes-count">'+cnt+'</span></button>' : '<button class="notes-btn" data-id="'+id+'">筆記</button>'; }
-const dt = $('#tbl').DataTable({data:estates.map(e=>['<a class="estate-link" data-i="'+e.i+'">'+e.name+'</a>',e.dist,e.year?'<span data-order="'+((e.year.match(/[0-9]{4}/g)||['0'])[0])+'">'+e.year+'</span>':'',e.types,e.blocks,notesBtnHtml(e.id)]),order:[[2,'asc']],pageLength:50,pagingType:'full_numbers',columnDefs:[{targets:2,type:'num'},{targets:5,orderable:false}],language:{paginate:{first:'首頁',last:'末頁',next:'下頁',previous:'上頁'},info:'顯示 _START_–_END_ / _TOTAL_ 項',infoEmpty:'無資料',zeroRecords:'無符合資料'}});
-document.getElementById('status').textContent = '✅ 已載入 '+estates.length+' 個屋邨';
-function uniq(arr){return [...new Set(arr.filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-Hant'))}
-uniq(estates.map(e=>e.name)).forEach(v=>$('#f0').append('<option>'+v+'</option>')); uniq(estates.map(e=>e.dist)).forEach(v=>$('#f1').append('<option>'+v+'</option>')); uniq(estates.map(e=>e.types)).forEach(v=>$('#f2').append('<option>'+v+'</option>')); uniq(estates.map(e=>e.blocks)).forEach(v=>$('#f3').append('<option>'+v+'</option>'));
-$.fn.dataTable.ext.search.push((_,data)=>{ const f0=$('#f0').val(),f1=$('#f1').val(),f2=$('#f2').val(),f3=$('#f3').val(); if(f0 && !data[0].includes(f0)) return false; if(f1 && data[1]!==f1) return false; if(f2 && data[3]!==f2) return false; if(f3 && data[4]!==f3) return false; return true; });
-$('#srch').on('input',()=>dt.search($('#srch').val()).draw()); $('#f0,#f1,#f2,#f3').on('change',()=>dt.draw());
-$(document).on('click','.estate-link',function(){ const i=parseInt($(this).data('i')); if(markers[i]){ lmap.setView(markers[i].getLatLng(),16); markers[i].openPopup(); } });
-const overlay=$('#overlay'); let curId=null; function openModal(id,title){ curId=id; const n=NOTES[id]||{}; $('#mtitle').text('📝 '+title); $('#noteText').val(n.text||''); renderPhotos(n.photos||[]); clearCanvas(); overlay.addClass('open'); } function closeModal(){ overlay.removeClass('open'); curId=null; } overlay.on('click',function(e){ if(e.target===this) closeModal(); }); $('#mclose').on('click',closeModal);
-function refreshBadges(){ $('#tbl tbody tr').each(function(){ const btn=$(this).find('.notes-btn'); if(btn.length) btn.parent().html(notesBtnHtml(btn.data('id'))); }); }
-$(document).on('click','.notes-btn',function(){ openModal($(this).data('id'), $(this).closest('tr').find('.estate-link').text().trim()); });
-$('#saveNote').on('click',function(){ if(!curId) return; NOTES[curId]=NOTES[curId]||{}; NOTES[curId].text=$('#noteText').val(); safeStoreSet('prhNotesSafe', NOTES); refreshBadges(); closeModal(); });
-$('#clearAll').on('click',function(){ if(!curId) return; delete NOTES[curId]; safeStoreSet('prhNotesSafe', NOTES); refreshBadges(); closeModal(); });
-$('#dropZone').on('click',()=>$('#fileIn').click()); $('#fileIn').on('change',e=>handleFiles(e.target.files)); $('#dropZone').on('dragover dragenter',function(e){e.preventDefault();}); $('#dropZone').on('drop',function(e){e.preventDefault(); handleFiles(e.originalEvent.dataTransfer.files);});
-function handleFiles(files){ Array.from(files).forEach(f=>{ const r=new FileReader(); r.onload=ev=>{ NOTES[curId]=NOTES[curId]||{photos:[]}; NOTES[curId].photos=NOTES[curId].photos||[]; NOTES[curId].photos.push(ev.target.result); renderPhotos(NOTES[curId].photos); safeStoreSet('prhNotesSafe', NOTES); }; r.readAsDataURL(f); }); }
-function renderPhotos(photos){ $('#pcount').text(photos.length ? '('+photos.length+' 張)' : ''); if(!photos.length){ $('#pGrid').html('<p style="color:#94a3b8;font-size:14px;padding:12px 0;">尚未上傳照片</p>'); return; } $('#pGrid').html(photos.map((p,i)=>'<div class="photo-wrap"><img src="'+p+'"><button class="photo-del" data-i="'+i+'">✕</button></div>').join('')); }
-$(document).on('click','.photo-del',function(){ if(!curId) return; const i=parseInt($(this).data('i')); NOTES[curId].photos.splice(i,1); renderPhotos(NOTES[curId].photos); safeStoreSet('prhNotesSafe', NOTES); });
-const canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d'); let drawing=false, tool='pen'; function resizeCanvas(){ const w=canvas.offsetWidth||600; canvas.width=w; canvas.height=220; ctx.fillStyle='#fff'; ctx.fillRect(0,0,w,220); } function clearCanvas(){ resizeCanvas(); } resizeCanvas(); window.addEventListener('resize',resizeCanvas); $('.tb[data-t]').on('click',function(){ $('.tb[data-t]').removeClass('on'); $(this).addClass('on'); tool=$(this).data('t'); }); $('#clearDraw').on('click',clearCanvas); function pos(e){ const r=canvas.getBoundingClientRect(); const s=e.touches?e.touches[0]:e; return {x:(s.clientX-r.left)*(canvas.width/r.width), y:(s.clientY-r.top)*(canvas.height/r.height)}; } function start(e){ e.preventDefault(); drawing=true; const p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); } function move(e){ e.preventDefault(); if(!drawing) return; const p=pos(e); if(tool==='erase'){ ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=parseInt($('#sizeRange').val())*4; } else { ctx.globalCompositeOperation='source-over'; ctx.strokeStyle=$('#colorPick').val(); ctx.lineWidth=parseInt($('#sizeRange').val()); } ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineTo(p.x,p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x,p.y); } function stop(){ drawing=false; } canvas.addEventListener('mousedown',start); canvas.addEventListener('mousemove',move); canvas.addEventListener('mouseup',stop); canvas.addEventListener('mouseleave',stop); canvas.addEventListener('touchstart',start,{passive:false}); canvas.addEventListener('touchmove',move,{passive:false}); canvas.addEventListener('touchend',stop); $('#saveDraw').on('click',function(){ if(!curId) return; const img=canvas.toDataURL('image/png'); NOTES[curId]=NOTES[curId]||{photos:[]}; NOTES[curId].photos=NOTES[curId].photos||[]; NOTES[curId].photos.push(img); renderPhotos(NOTES[curId].photos); safeStoreSet('prhNotesSafe', NOTES); clearCanvas(); });
+const estates = RAW.map((r, i) => {
+  const yearText = (r['Year of Intake'] && (r['Year of Intake']['zh-Hant'] || r['Year of Intake']['en'])) || '';
+  const matches = yearText.match(/[0-9]{4}/g);
+  const sortYear = matches && matches.length ? Math.min.apply(null, matches.map(Number)) : 0;
+  return {
+    i: i,
+    name: (r['Estate Name'] && r['Estate Name']['zh-Hant']) || '',
+    dist: (r['District Name'] && r['District Name']['zh-Hant']) || '',
+    year: yearText,
+    sortYear: sortYear,
+    types: (r['Type(s) of Block(s)'] && r['Type(s) of Block(s)']['zh-Hant']) || '',
+    blocks: String(r['No. of Blocks'] || 'N/A'),
+    lat: parseFloat(r['Estate Map Latitude']),
+    lng: parseFloat(r['Estate Map Longitude']),
+    id: eid(((r['Estate Name']||{})['zh-Hant']) || '', ((r['District Name']||{})['zh-Hant']) || '')
+  };
+}).filter(e => e.name);
+const SHARED_NOTES = {};
+const lmap = L.map('map').setView([22.32,114.17],10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' }).addTo(lmap);
+const markers = {};
+const bounds = [];
+estates.forEach(function(e){
+  if (!isNaN(e.lat) && !isNaN(e.lng)) {
+    const m = L.marker([e.lat, e.lng]).addTo(lmap);
+    m.bindPopup('<b>'+e.name+'</b><br>'+e.dist+'<br>'+e.year);
+    markers[e.i] = m;
+    bounds.push([e.lat, e.lng]);
+  }
+});
+if (bounds.length) lmap.fitBounds(bounds, { padding:[10,10] });
+function notesBtnHtml(id) {
+  const n = SHARED_NOTES[id];
+  const cnt = (n && n.text ? 1 : 0) + ((n && n.photos) ? n.photos.length : 0);
+  return cnt ? '<button class="notes-btn has" data-id="'+id+'">筆記 <span class="notes-count">'+cnt+'</span></button>' : '<button class="notes-btn" data-id="'+id+'">筆記</button>';
+}
+const tableRows = estates.map(function(e){
+  return [
+    '<a class="estate-link" data-i="'+e.i+'">'+e.name+'</a>',
+    e.dist,
+    e.year,
+    e.types,
+    e.blocks,
+    notesBtnHtml(e.id),
+    e.sortYear,
+    e.id
+  ];
+});
+const dt = $('#tbl').DataTable({
+  data: tableRows,
+  columnDefs: [
+    { targets: 2, render: function(data, type, row){ return (type === 'sort' || type === 'type') ? row[6] : data; } },
+    { targets: 5, orderable: false },
+    { targets: 6, visible: false, searchable: false },
+    { targets: 7, visible: false, searchable: false }
+  ],
+  order: [[2, 'asc']],
+  pageLength: 50,
+  pagingType: 'full_numbers',
+  language: {
+    paginate: { first:'首頁', last:'末頁', next:'下頁', previous:'上頁' },
+    info:'顯示 _START_–_END_ / _TOTAL_ 項',
+    infoEmpty:'無資料',
+    zeroRecords:'無符合資料'
+  },
+  createdRow: function(row, data){ $(row).attr('data-estate-id', data[7]); }
+});
+function refreshBadges(){
+  $('#tbl tbody tr').each(function(){
+    const estateId = $(this).attr('data-estate-id');
+    if (estateId) $(this).find('td:eq(5)').html(notesBtnHtml(estateId));
+  });
+}
+function uniq(arr){ return Array.from(new Set(arr.filter(Boolean))).sort(function(a,b){ return a.localeCompare(b,'zh-Hant'); }); }
+uniq(estates.map(e=>e.name)).forEach(v=>$('#f0').append('<option>'+v+'</option>'));
+uniq(estates.map(e=>e.dist)).forEach(v=>$('#f1').append('<option>'+v+'</option>'));
+uniq(estates.map(e=>e.types)).forEach(v=>$('#f2').append('<option>'+v+'</option>'));
+uniq(estates.map(e=>e.blocks)).forEach(v=>$('#f3').append('<option>'+v+'</option>'));
+$.fn.dataTable.ext.search.push(function(settings, data, dataIndex){
+  const f0=$('#f0').val(), f1=$('#f1').val(), f2=$('#f2').val(), f3=$('#f3').val();
+  const row = dt.row(dataIndex).data();
+  if (!row) return true;
+  if (f0 && row[0].indexOf(f0) === -1) return false;
+  if (f1 && row[1] !== f1) return false;
+  if (f2 && row[3] !== f2) return false;
+  if (f3 && row[4] !== f3) return false;
+  return true;
+});
+$('#srch').on('input', function(){ dt.search($('#srch').val()).draw(); });
+$('#f0,#f1,#f2,#f3').on('change', function(){ dt.draw(); });
+$(document).on('click', '.estate-link', function(){ const i=parseInt($(this).data('i')); if(markers[i]){ lmap.setView(markers[i].getLatLng(),16); markers[i].openPopup(); } });
+async function loadSharedNotes(){
+  const result = await sb.from('estate_notes').select('*');
+  if (result.error) { $('#status').text('⚠️ 已載入 '+estates.length+' 個屋邨，但共享筆記讀取失敗：'+result.error.message); return; }
+  result.data.forEach(function(row){ SHARED_NOTES[row.estate_id] = row; });
+  refreshBadges();
+  $('#status').text('✅ 已載入 '+estates.length+' 個屋邨，共享筆記已連接');
+}
+const overlay = $('#overlay');
+let curId = null;
+function openModal(id, title){ curId=id; const n=SHARED_NOTES[id]||{}; $('#mtitle').text('📝 '+title); $('#noteText').val(n.text||''); renderPhotos(n.photos||[]); clearCanvas(); overlay.addClass('open'); }
+function closeModal(){ overlay.removeClass('open'); curId=null; }
+overlay.on('click', function(e){ if (e.target === this) closeModal(); });
+$('#mclose').on('click', closeModal);
+$(document).on('click', '.notes-btn', function(){ openModal($(this).data('id'), $(this).closest('tr').find('.estate-link').text().trim()); });
+async function saveCurrent(){
+  if (!curId) return;
+  const payload = { estate_id: curId, text: $('#noteText').val(), photos: (SHARED_NOTES[curId] && SHARED_NOTES[curId].photos) || [], updated_at: new Date().toISOString() };
+  const result = await sb.from('estate_notes').upsert(payload, { onConflict: 'estate_id' }).select().single();
+  if (result.error) { alert('保存失敗: ' + result.error.message); return; }
+  SHARED_NOTES[curId] = result.data;
+  refreshBadges();
+  closeModal();
+}
+$('#saveNote').on('click', saveCurrent);
+async function clearCurrent(){
+  if (!curId) return;
+  if (!confirm('清除這個屋邨的共享筆記？')) return;
+  const result = await sb.from('estate_notes').delete().eq('estate_id', curId);
+  if (result.error) { alert('刪除失敗: ' + result.error.message); return; }
+  delete SHARED_NOTES[curId];
+  refreshBadges();
+  closeModal();
+}
+$('#clearAll').on('click', clearCurrent);
+$('#dropZone').on('click', function(){ $('#fileIn').click(); });
+$('#fileIn').on('change', function(e){ handleFiles(e.target.files); });
+$('#dropZone').on('dragover dragenter', function(e){ e.preventDefault(); });
+$('#dropZone').on('drop', function(e){ e.preventDefault(); handleFiles(e.originalEvent.dataTransfer.files); });
+function handleFiles(files){
+  Array.from(files).forEach(function(f){
+    const r = new FileReader();
+    r.onload = function(ev){
+      SHARED_NOTES[curId] = SHARED_NOTES[curId] || { photos: [] };
+      SHARED_NOTES[curId].photos = SHARED_NOTES[curId].photos || [];
+      SHARED_NOTES[curId].photos.push(ev.target.result);
+      renderPhotos(SHARED_NOTES[curId].photos);
+    };
+    r.readAsDataURL(f);
+  });
+}
+function renderPhotos(photos){
+  $('#pcount').text(photos.length ? '('+photos.length+' 張)' : '');
+  if (!photos.length) { $('#pGrid').html('<p style="color:#94a3b8;font-size:14px;padding:12px 0;">尚未上傳照片</p>'); return; }
+  $('#pGrid').html(photos.map(function(p,i){ return '<div class="photo-wrap"><img src="'+p+'"><button class="photo-del" data-i="'+i+'">✕</button></div>'; }).join(''));
+}
+$(document).on('click', '.photo-del', function(){ if (!curId) return; const i=parseInt($(this).data('i')); SHARED_NOTES[curId].photos.splice(i,1); renderPhotos(SHARED_NOTES[curId].photos); });
+const canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d'); let drawing=false, tool='pen';
+function resizeCanvas(){ const w=canvas.offsetWidth||600; canvas.width=w; canvas.height=220; ctx.fillStyle='#fff'; ctx.fillRect(0,0,w,220); }
+function clearCanvas(){ resizeCanvas(); }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+$('.tb[data-t]').on('click', function(){ $('.tb[data-t]').removeClass('on'); $(this).addClass('on'); tool=$(this).data('t'); });
+$('#clearDraw').on('click', clearCanvas);
+function pos(e){ const r=canvas.getBoundingClientRect(); const s=e.touches?e.touches[0]:e; return { x:(s.clientX-r.left)*(canvas.width/r.width), y:(s.clientY-r.top)*(canvas.height/r.height) }; }
+function start(e){ e.preventDefault(); drawing=true; const p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+function move(e){ e.preventDefault(); if(!drawing) return; const p=pos(e); if(tool==='erase'){ ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=parseInt($('#sizeRange').val())*4; } else { ctx.globalCompositeOperation='source-over'; ctx.strokeStyle=$('#colorPick').val(); ctx.lineWidth=parseInt($('#sizeRange').val()); } ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineTo(p.x,p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+function stop(){ drawing=false; }
+canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); canvas.addEventListener('mouseup', stop); canvas.addEventListener('mouseleave', stop); canvas.addEventListener('touchstart', start, {passive:false}); canvas.addEventListener('touchmove', move, {passive:false}); canvas.addEventListener('touchend', stop);
+$('#saveDraw').on('click', function(){ if(!curId) return; const img=canvas.toDataURL('image/png'); SHARED_NOTES[curId]=SHARED_NOTES[curId]||{photos:[]}; SHARED_NOTES[curId].photos=SHARED_NOTES[curId].photos||[]; SHARED_NOTES[curId].photos.push(img); renderPhotos(SHARED_NOTES[curId].photos); });
+$('#status').text('✅ 已載入 '+estates.length+' 個屋邨，正在連接共享筆記…');
+loadSharedNotes();
 console.log('Loaded estates:', estates.length);
 </script>
 </body>
